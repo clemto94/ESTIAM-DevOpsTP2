@@ -12,8 +12,12 @@ var dbRouter = require('./routes/db');
 var app = express();
 require('./model/Mydb');
 
-mongoose.connect('mongodb://localhost/myAppDockerCompose', {useNewUrlParser: true});
-
+mongoose.connect('mongodb://root:pass@localhost:27017/myAppDockerCompose?authSource=admin', {useNewUrlParser: true});
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection erreur: cannot connect to mydb "));
+db.once("open", ()=>{
+    console.log("connect to db");
+});
 mongoose.model('Mydb').find({}, (err, items) => {
   if(err)
     console.log(err)

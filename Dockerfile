@@ -12,3 +12,4 @@ WORKDIR /myApp
 CMD [ "npm", "start"]
 # CMD [ "bash", "-c", "cd", "/bin"]
 # CMD [ "ls" ]
+EXPOSE 3000

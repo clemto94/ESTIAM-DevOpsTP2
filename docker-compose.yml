@@ -7,13 +7,22 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - 3000:8080
+      - '3000:3000'
     command: npm run start
     links:
       - mongo
   mongo:
+    container_name: mongo
     image: mongo
-    # ports:
-    #   - 27017:27017
+    restart: always
+    ports:
+      - 27624:27624
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+    volumes:
+      - /var/lib/docker/volumes
+    command: mongod --smallfiles --logpath=/dev/null
     # volumes:
     #   - ./data/db:/data/db
