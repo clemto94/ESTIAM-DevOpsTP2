@@ -2,17 +2,23 @@ version: '3'
 services:
   app:
     build: .
-    depends_on:
-      - mongo
+    restart: always    
+    # depends_on:
+    #   - mongo
     environment:
       NODE_ENV: development
     ports:
       - '3000:3000'
     command: npm run start
-    links:
-      - mongo
-  mongo:
+    # links:
+    #   - mydb
+    networks: 
+      backend_ops:
+        aliases: ["app.ops.local"]
+
+  mydb:
     container_name: mongo
+    restart: always
     image: mongo
     restart: always
     ports:
@@ -24,5 +30,12 @@ services:
     volumes:
       - /var/lib/docker/volumes
     command: mongod --smallfiles --logpath=/dev/null
+    networks: 
+      backend_ops:
+        aliases: ["mydb.ops.local"]
     # volumes:
     #   - ./data/db:/data/db
+
+networks: 
+  backend_ops:
+    driver: bridge

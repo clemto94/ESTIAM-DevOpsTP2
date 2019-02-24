@@ -5,34 +5,33 @@ var cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var dbRouter = require('./routes/db');
-
 var app = express();
-require('./model/Mydb');
 
-mongoose.connect('mongodb://root:pass@localhost:27017/myAppDockerCompose?authSource=admin', {useNewUrlParser: true});
+mongoose.connect('mongodb://root:pass@mydb:27017/myAppDockerCompose?authSource=admin', {useNewUrlParser: true});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection erreur: cannot connect to mydb "));
 db.once("open", ()=>{
     console.log("connect to db");
 });
-mongoose.model('Mydb').find({}, (err, items) => {
-  if(err)
-    console.log(err)
-  else{
-    items[0].increment = 0
-    mongoose.model('Mydb').findByIdAndUpdate(items[0]._id, items[0], (err, resp)=>{
-      if(err){
-        console.log("none", err)
-      } else {
-        console.log("ok", resp)
-      }
-    })
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var dbRouter = require('./routes/db');
+require('./model/Mydb');
+// mongoose.model('Mydb').find({}, (err, items) => {
+//   if(err)
+//     console.log(err)
+//   else{
+//     items[0].increment = 0
+//     mongoose.model('Mydb').findByIdAndUpdate(items[0]._id, items[0], (err, resp)=>{
+//       if(err){
+//         console.log("none", err)
+//       } else {
+//         console.log("ok", resp)
+//       }
+//     })
     
-  }
-});
+//   }
+// });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
