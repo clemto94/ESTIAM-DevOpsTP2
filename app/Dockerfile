@@ -4,7 +4,7 @@ RUN apt-get update; \
 RUN apt-get install nodejs npm -y
 RUN ln -s /usr/bin/nodejs /usr/local/bin/node; \
     ln -s /usr/bin/npm /usr/local/bin/npm
-COPY ./app /myApp
+COPY . /myApp
 COPY --chown= . .
 # pour changer de repertoire
 WORKDIR /myApp 
